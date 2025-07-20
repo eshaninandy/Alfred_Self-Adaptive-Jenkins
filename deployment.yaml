@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: devops-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-server
+  template:
+    metadata:
+      labels:
+        app: jenkins-server
+    spec:
+      securityContext:
+            runAsUser: 1000750000
+      serviceAccountName: jenkins-admin
+      containers:
+        - name: jenkins
+          image: guigoleto/my-jenkins-with-python-java:latest
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000          # Jenkins default user ID
+            runAsGroup: 1000         # Jenkins default group ID
+          resources:
+            limits:
+              memory: "10Gi"
+              cpu: "3000m"
+            requests:
+              memory: "1000Mi"
+              cpu: "500m"
+          ports:
+            - name: httpport
+              containerPort: 8080
+            - name: jnlpport
+              containerPort: 50000
+          livenessProbe:
+            httpGet:
+              path: "/login"
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: "/login"
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                - ALL
+            runAsNonRoot: true
+            seccompProfile:
+                type: "RuntimeDefault"
+      volumes:
+        - name: jenkins-data
+          persistentVolumeClaim:
+              claimName: jenkins-pv-claim

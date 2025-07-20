@@ -1,0 +1,57 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: devops-tools
+  uid: aa1d0bcb-5a1a-4e3d-9c0d-1a98bd6dbdb3
+  resourceVersion: '67635988'
+  creationTimestamp: '2024-11-01T19:05:10Z'
+  labels:
+    kubernetes.io/metadata.name: devops-tools
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: v1.24
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.24
+  annotations:
+    openshift.io/sa.scc.mcs: 's0:c27,c9'
+    openshift.io/sa.scc.supplemental-groups: 1000720000/10000
+    openshift.io/sa.scc.uid-range: 1000720000/10000
+  managedFields:
+    - manager: pod-security-admission-label-synchronization-controller
+      operation: Apply
+      apiVersion: v1
+      time: '2024-11-01T19:05:11Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            'f:pod-security.kubernetes.io/audit': {}
+            'f:pod-security.kubernetes.io/audit-version': {}
+            'f:pod-security.kubernetes.io/warn': {}
+            'f:pod-security.kubernetes.io/warn-version': {}
+    - manager: kubectl-create
+      operation: Update
+      apiVersion: v1
+      time: '2024-11-01T19:05:10Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:kubernetes.io/metadata.name': {}
+    - manager: cluster-policy-controller
+      operation: Update
+      apiVersion: v1
+      time: '2024-11-01T19:05:11Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:openshift.io/sa.scc.mcs': {}
+            'f:openshift.io/sa.scc.supplemental-groups': {}
+            'f:openshift.io/sa.scc.uid-range': {}
+spec:
+  finalizers:
+    - kubernetes
+status:
+  phase: Active
